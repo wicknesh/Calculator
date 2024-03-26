@@ -1,3 +1,10 @@
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+}
+
 html {
     position: relative;
     min-height: 100%;
@@ -32,21 +39,24 @@ body {
 .display-container {
     border: 2px solid;
     border-color: black;
-    padding: 50px 20px;
+    padding: 50px;
     text-align: right;
     background-color: black;
+    margin-bottom: 10px;
+    border-bottom: 2px rgb(85, 85, 85) solid;
+    min-height: 64px;
 }
 
 button {
     cursor: pointer;
     font-family: inherit;
-    height: 100px;
+    height: 90px;
 }
 
 .misc-button-container {
     display: flex;
     /* grid-template-columns: repeat(4, 1fr); */
-    grid-gap: 10px;
+    gap: 10px;
 }
 
 .data-button-container {
@@ -77,14 +87,14 @@ button {
 .btn-clr {
     font-size: 25px;
     color: rgb(255, 0, 0);   
-    width: 50%;
+    width: 37.5%;
     /* padding: 10px 0; */
     border-radius: 10px;
 }
 
 .btn-del {
     color: white;
-    width: 50%;
+    width: 37.5%;
     /* padding: 10px 0; */
     border-radius: 10px;
 }
@@ -97,4 +107,46 @@ button {
     height: 90px;
     font-size: 25px;
     margin-top: 1vh;
+}
+
+.btn.misc{
+    color: white;
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+    font-size: 25px;
+}
+
+.btm-button-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.btm-button-container .btn {
+    /* flex: 1 0 calc(25% - 10px); */
+    color: white;
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+    font-size: 25px;
+    margin-top: 1vh;
+}
+
+.btn.equalTo {
+    border-radius: 10px;
+    width: 50%;
+    background-color: rgb(134, 134, 134);
+}
+
+.btn.equalTo:hover {
+    background-color: rgb(144, 144, 144);
+}
+
+.btn.equalTo:active {
+    background-color: rgb(154, 154, 154);
+}
+
+span {
+    color: red;
 }
