@@ -85,7 +85,7 @@ button {
 }
 
 .btn-clr {
-    font-size: 25px;
+    font-size: 35px;
     color: rgb(255, 0, 0);   
     width: 37.5%;
     /* padding: 10px 0; */
@@ -105,7 +105,7 @@ button {
     border-radius: 50%;
     width: 90px;
     height: 90px;
-    font-size: 25px;
+    font-size: 35px;
     margin-top: 1vh;
 }
 
@@ -114,7 +114,7 @@ button {
     border-radius: 50%;
     width: 90px;
     height: 90px;
-    font-size: 25px;
+    font-size: 35px;
 }
 
 .btm-button-container {
@@ -129,11 +129,12 @@ button {
     border-radius: 50%;
     width: 90px;
     height: 90px;
-    font-size: 25px;
+    font-size: 35px;
     margin-top: 1vh;
 }
 
 .btn.equalTo {
+    font-size: 50px;
     border-radius: 10px;
     width: 50%;
     background-color: rgb(134, 134, 134);
@@ -149,4 +150,8 @@ button {
 
 span {
     color: red;
+}
+
+.gg-backspace {
+    transform: scale(1.5) !important;
 }

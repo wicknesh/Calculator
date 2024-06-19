@@ -5,6 +5,8 @@
 let firstOperand = '';
 let secondOperand = '';
 let currentOperation = null;
+let result = '';
+let pCounter = 0;
 
 const displayContainer = document.querySelector('.display-container');
 const numberButtons = document.querySelectorAll('[data-number]');
@@ -12,21 +14,42 @@ const operatorButtons = document.querySelectorAll('[data-operator]');
 const clearButton = document.querySelector('.btn-clr');
 const equalButton = document.querySelector('.equalTo');
 const point = document.querySelector('.pointBtn');
+const bksp = document.querySelector('.btn-del');
 
-numberButtons.forEach((button) => button.addEventListener('click', () => appendNumber(button.textContent)));
+numberButtons.forEach((button) => button.addEventListener('click', () => appendNumber(button.textContent), false));
 operatorButtons.forEach((button) => button.addEventListener('click', () => addOperator(button.textContent)));
 
-//console.log(point);
+bksp.addEventListener('click', () => {
+    displayContainer.textContent = displayContainer.textContent.slice(0, -1);
+    if(firstOperand) {
+        firstOperand = Number(firstOperand.toString().slice(0,-1));
+    }
+})
 
 point.addEventListener('click', () => {
-    if(firstOperand == ''){
-        firstOperand = 0+`${point.textContent}`;
-        displayContainer.textContent = `${firstOperand}`;
+    // if(firstOperand == ''){
+    //     firstOperand = 0+`${point.textContent}`;
+    //     displayContainer.textContent = `${firstOperand}`;
+    // }
+    // else if(secondOperand == ''){
+    //     secondOperand = 0+`${point.textContent}`;
+    //     displayContainer.textContent = `${firstOperand}${currentOperation}${secondOperand}`;
+    // }
+    // else if(secondOperand) {
+    //     secondOperand = secondOperand + '.';
+    // }
+    // else if(firstOperand) {
+    //     firstOperand = firstOperand + '.';
+    // }
+    if(displayContainer.textContent === ''){
+        displayContainer.textContent += 0;
     }
-    else if(secondOperand == ''){
-        secondOperand = 0+`${point.textContent}`;
-        displayContainer.textContent = `${firstOperand}${currentOperation}${secondOperand}`;
-    }
+
+    if(pCounter === 1) return;
+    
+    displayContainer.textContent += '.';
+    pCounter++;
+
 });
 
 clearButton.addEventListener('click', () => {
@@ -34,34 +57,67 @@ clearButton.addEventListener('click', () => {
     secondOperand = '';
     currentOperation = null;
     displayContainer.textContent = null;
+    pCounter = 0;
 });
 
 equalButton.addEventListener('click', () => {
     if(firstOperand && secondOperand){
         evaluate(firstOperand, secondOperand, currentOperation);
         return;
+    }
+    if(!firstOperand) {
+        return;
     } 
-    secondOperand = parseInt(displayContainer.textContent.split(/(?:[+×÷-])/)[1]);
-    if(secondOperand == 0) {
+    //secondOperand = parseInt(displayContainer.textContent.split(/(?:[+×÷-])/)[1]);
+    secondOperand = displayContainer.textContent.split(/(?:[+×÷-])/)[1];
+    if(secondOperand == 0 && currentOperation === '÷') {
         displayContainer.innerHTML = `${firstOperand}<span>${currentOperation}${secondOperand}</span>`;
+        console.log(secondOperand);
+        return;
+    }
+    if(secondOperand === undefined){
+        displayContainer.textContent = firstOperand;
         return;
     }
     evaluate(firstOperand, secondOperand, currentOperation);
 });
 
 function appendNumber(number) {
-    if(firstOperand == '0.') firstOperand = parseFloat(`${firstOperand}${number}`);
-    else if(secondOperand == '0.'){
-        secondOperand = parseFloat(`${secondOperand}${number}`);
+    // if(firstOperand == '0.') firstOperand = parseFloat(`${firstOperand}${number}`);
+    // else if(secondOperand == '0.'){
+    //     secondOperand = parseFloat(`${secondOperand}${number}`);
+    //     displayContainer.textContent += number;
+    // }
+    // else displayContainer.textContent += number;
+    //console.log(currentOperation);
+    if(result && currentOperation === null){
+        displayContainer.textContent = number;
+        firstOperand = '';
+        result = '';
+    }
+    else if(result && currentOperation){
         displayContainer.textContent += number;
     }
-    else displayContainer.textContent += number;
+    else {
+        displayContainer.textContent += number;
+    }
 }
 
 function addOperator(operator){
-    if (firstOperand == '') firstOperand = parseInt(displayContainer.textContent);
-    currentOperation = operator;
-    displayContainer.textContent = `${firstOperand}${currentOperation}`;
+    if(firstOperand == '') firstOperand = displayContainer.textContent;
+    //else firstOperand = displayContainer;
+    //firstOperand = displayContainer.textContent;
+    if(currentOperation === null){
+        currentOperation = operator;
+        pCounter = 0;
+        displayContainer.textContent = `${firstOperand}${currentOperation}`;
+    }
+    else if(currentOperation){
+        secondOperand = displayContainer.textContent.split(/(?:[+×÷-])/)[1];
+        evaluate(firstOperand, secondOperand, currentOperation);
+        currentOperation = operator;
+        displayContainer.textContent += operator;
+    }
 }
 
 function evaluate(first, second, operator) {
@@ -71,9 +127,13 @@ function evaluate(first, second, operator) {
     // console.log(second);
     // console.log(typeof operator);
     // console.log(operator);
-    firstOperand = operate(first, second, operator);
-    //console.log(result);
-    displayContainer.textContent = firstOperand;
+    result = operate(first, second, operator);
+    firstOperand = result;
+    currentOperation = null;
+    secondOperand = '';
+    pCounter = 0;
+    // console.log(result);
+    displayContainer.textContent = result;
 }
 
 
@@ -94,6 +154,8 @@ function divide(a, b) {
 }
 
 function operate(a, b, x) {
+    a = Number(a);
+    b = Number(b);
     let result = '';
     switch(x) {
         case '+':
@@ -109,5 +171,5 @@ function operate(a, b, x) {
             result = divide(a, b);
             break;
     }
-    return result;
+    return parseFloat(result.toFixed(4));
 }
